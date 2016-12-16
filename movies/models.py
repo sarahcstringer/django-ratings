@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-
+from django.urls import reverse
 from django.db import models
 
 # Create your models here.
@@ -21,6 +21,22 @@ class Movie(models.Model):
     def __str__(self):
         return self.title
 
+    def get_categories_str(self):
+        """Return the string of movie categories"""
+
+        return ', '.join(category.category_name for category in self.category.all())
+
+    def get_avg_rating(self):
+        """Return the average rating for a movie"""
+
+        sum_of_ratings = sum(rating.rating for rating in self.rating_set.all())
+        return round(float(sum_of_ratings)/self.rating_set.count(), 2)
+
+    def get_absolute_url(self):
+        """URL for a movie detail view."""
+
+        return reverse('movie_detail', kwargs={'pk': self.id})
+
 
 class User(models.Model):
     email = models.EmailField(blank=True)
@@ -33,6 +49,11 @@ class User(models.Model):
     def __str__(self):
         return 'Age: {}, G:{}, Z:{}, P:{}'.format(self.age, self.gender, self.zipcode, self.profession)
 
+    def get_avg_usr_rating(self):
+        """Return the average rating a user gives"""
+
+        sum_of_ratings = sum(rating.rating for rating in self.rating_set.all())
+        return round(float(sum_of_ratings)/self.rating_set.count(), 2)
 
 class Rating(models.Model):
     user = models.ForeignKey('User')
@@ -40,7 +61,7 @@ class Rating(models.Model):
     rating = models.PositiveSmallIntegerField()
 
     def __str__(self):
-        return 'User: {}; Movie: {}; Score: {}'.format(self.user, self.movie, self.rating)
+        return 'User: {}; Movie: {}; Score: {}'.format(self.user.id, self.movie.title, self.rating)
 
 
 
