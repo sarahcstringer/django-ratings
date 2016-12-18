@@ -5,21 +5,26 @@ from django.views import generic
 from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Count
+from django.template import Context, Template
 
 # Create your views here.
 
+context = Context({})
 
-class MovieListview(generic.ListView):
+class MovieListview(generic.TemplateView):
     """General list of movies"""
 
     model = Movie
+    template_name = 'movies/movie_list.html'
 
 
-    def get_queryset(self):
+    def get_context_data(self, **kwargs):
 
-        return Movie.objects.order_by('title')
+        context['top_5'] = Movie.objects.annotate(ratings=Count('rating')).order_by('-ratings')[:5]
 
-    context['top_5'] = Movie.objects.annotate(ratings=Count('rating')).order_by('-ratings')[:5]
+        context['movie_list'] = Movie.objects.order_by('title')
+
+        return context
 
 class MovieDetailView(generic.DetailView):
     """Detail page for a movie"""
