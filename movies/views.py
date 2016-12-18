@@ -4,12 +4,10 @@ from django.urls import reverse
 from django.views import generic
 from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.db.models import Count
+from django.db.models import Count, Avg
 from django.template import Context, Template
 
 # Create your views here.
-
-context = Context({})
 
 class MovieListview(generic.TemplateView):
     """General list of movies"""
@@ -20,7 +18,11 @@ class MovieListview(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
 
-        context['top_5'] = Movie.objects.annotate(ratings=Count('rating')).order_by('-ratings')[:5]
+        context = super(MovieListview, self).get_context_data(**kwargs)
+
+        context['5_most_rated'] = Movie.objects.annotate(ratings=Count('rating')).order_by('-ratings')[:5]
+        context['5_highest_rated'] = Movie.objects.annotate(scores=Avg('rating__rating'),
+                                                            cnt=Count('rating')).exclude(cnt__lt=5).order_by('-scores')[:5]
 
         context['movie_list'] = Movie.objects.order_by('title')
 
@@ -28,5 +30,13 @@ class MovieListview(generic.TemplateView):
 
 class MovieDetailView(generic.DetailView):
     """Detail page for a movie"""
-
     model = Movie
+
+    # def get_queryset(self):
+    #
+    def get_context_data(self, **kwargs):
+        obj = self.get_object()
+        # print obj
+        context = super(MovieDetailView, self).get_context_data(**kwargs)
+        context['num_ratings'] = obj.rating_set.count()
+        return context

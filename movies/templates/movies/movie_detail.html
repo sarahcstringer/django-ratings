@@ -1,6 +1,6 @@
 <h1>{{ movie.title }}</h1>
 <h3>{{ movie.released_at }}</h3>
-<h3>Average rating: {{ movie.get_avg_rating }}</h3>
+<h3>Average rating: {{ movie.get_avg_rating }} (Rated {{ num_ratings }} times)</h3>
 <ul>
 {% for category in movie.category.all %}
     <li>{{ category.category_name }}</li>

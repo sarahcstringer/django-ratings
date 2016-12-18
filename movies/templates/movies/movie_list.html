@@ -1,8 +1,15 @@
 
 <h1>Most Rated Movies</h1>
 <ul>
-    {% for movie in top_5 %}
+    {% for movie in 5_most_rated %}
         <li><a href="{% url 'movies:movies.movie_detail' movie.id %}">{{ movie.title }} (Rated {{ movie.ratings }} times)</a></li>
+    {% endfor %}
+</ul>
+
+<h1>Best Rated Movies</h1>
+<ul>
+    {% for movie in 5_highest_rated %}
+    <li><a href="{% url 'movies:movies.movie_detail' movie.id %}">{{ movie.title }} (Rated {{ movie.scores|floatformat:2 }})</a></li>
     {% endfor %}
 </ul>
 
