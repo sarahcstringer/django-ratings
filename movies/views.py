@@ -40,3 +40,9 @@ class MovieDetailView(generic.DetailView):
         context = super(MovieDetailView, self).get_context_data(**kwargs)
         context['num_ratings'] = obj.rating_set.count()
         return context
+
+class RatingCreateView(generic.CreateView):
+    """View for creating a rating"""
+    model = Rating
+
+    fields = ['user', 'movie', 'rating']
