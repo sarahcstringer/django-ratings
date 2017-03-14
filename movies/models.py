@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from django.urls import reverse
 from django.db import models
+from django.utils.functional import cached_property
 
 # Create your models here.
 
@@ -37,6 +38,12 @@ class Movie(models.Model):
 
         return reverse('movie_detail', kwargs={'pk': self.id})
 
+    @cached_property
+    def avg_rating(self):
+        """Return movie's average rating"""
+        sum_of_ratings = sum(rating.rating for rating in self.rating_set.all())
+        return round(float(sum_of_ratings) / self.rating_set.count(), 2)
+
 
 class User(models.Model):
     email = models.EmailField(blank=True)
@@ -55,6 +62,13 @@ class User(models.Model):
         sum_of_ratings = sum(rating.rating for rating in self.rating_set.all())
         return round(float(sum_of_ratings)/self.rating_set.count(), 2)
 
+    @cached_property
+    def avg_rating(self):
+        """Return the average user's rating"""
+        sum_of_ratings = sum(rating.rating for rating in self.rating_set.all())
+        return round(float(sum_of_ratings) / self.rating_set.count(), 2)
+
+
 class Rating(models.Model):
     user = models.ForeignKey('User')
     movie = models.ForeignKey('Movie')
@@ -62,7 +76,3 @@ class Rating(models.Model):
 
     def __str__(self):
         return 'User: {}; Movie: {}; Score: {}'.format(self.user.id, self.movie.title, self.rating)
-
-
-
-
