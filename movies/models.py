@@ -7,14 +7,14 @@ from django.utils.functional import cached_property
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=100)
+    category_name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.category_name.title()
 
     class Meta:
         verbose_name_plural = "Categories"
-        ordering = ['title']
+        ordering = ['category_name']
 
 
 class Movie(models.Model):

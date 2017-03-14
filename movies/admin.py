@@ -3,6 +3,7 @@ from .models import Category, Movie, User, Rating
 
 # Register your models here.
 admin.site.register(Category)
+# @admin.register(Category)
 
 
 @admin.register(Movie)
