@@ -3,39 +3,38 @@
 {% block bootstrap3_content %}
 <div class="container">
 
-    <!--<div class="row">-->
-    <!--<h1>Most Rated Movies</h1>-->
-<!--<ul>-->
-    <!--{% for movie in 5_most_rated %}-->
-        <!--<li><a href="{% url 'movies:movies.movie_detail' movie.id %}">{{ movie.title }} (Rated {{ movie.ratings }} times)</a></li>-->
-    <!--{% endfor %}-->
-<!--</ul>-->
+  <!--<div class="row">-->
+  <!--<h1>Most Rated Movies</h1>-->
+  <!--<ul>-->
+  <!--{% for movie in 5_most_rated %}-->
+  <!--<li><a href="{% url 'movies:movies.movie_detail' movie.id %}">{{ movie.title }} (Rated {{ movie.ratings }} times)</a></li>-->
+  <!--{% endfor %}-->
+  <!--</ul>-->
 
-<!--<h1>Best Rated Movies</h1>-->
-<!--<ul>-->
-    <!--{% for movie in 5_highest_rated %}-->
-    <!--<li><a href="{% url 'movies:movies.movie_detail' movie.id %}">{{ movie.title }} (Rated {{ movie.scores|floatformat:2 }})</a></li>-->
-    <!--{% endfor %}-->
-<!--</ul>-->
-    <!--</div>-->
-<div id="movie-list">
-<h1>Movie List</h1>
-<div class="row">
-    {%  for movie in movie_list %}
-     <a href="{% url 'movies:movies.movie_detail' movie.id %}">
-         <div class="col-xs-12 col-md-6 col-lg-4">
-             <h3>{{ movie.title }}</h3>
-             <p>{{ movie.avg_rating}}</p>
-         </div>
-     </a>
+  <!--<h1>Best Rated Movies</h1>-->
+  <!--<ul>-->
+  <!--{% for movie in 5_highest_rated %}-->
+  <!--<li><a href="{% url 'movies:movies.movie_detail' movie.id %}">{{ movie.title }} (Rated {{ movie.scores|floatformat:2 }})</a></li>-->
+  <!--{% endfor %}-->
+  <!--</ul>-->
+  <!--</div>-->
+  <div id="movie-list">
+    <h1>Movie List</h1>
+    <div class="row">
+      {% for movie in movie_list %}
+      <a href="{% url 'movies:movies.movie_detail' movie.id %}">
+        <div class="col-xs-12 col-md-6 col-lg-4">
+          <h3>{{ movie.title }}</h3>
+          <p>{{ movie.avg_rating}}</p>
+        </div>
+      </a>
 
-    {% endfor %}
+      {% endfor %}
 
-    {% if page_obj.paginator.num_pages > 1 %}
-          {% bootstrap_pagination page_obj size="small" extra=request.GET.urlencode %}
-        {% endif %}
-
-</div>
-</div>
+      {% if page_obj.paginator.num_pages > 1 %}
+      {% bootstrap_pagination page_obj size="small" extra=request.GET.urlencode %}
+      {% endif %}
+    </div>
+  </div>
 </div>
 {% endblock %}

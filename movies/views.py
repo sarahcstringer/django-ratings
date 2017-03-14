@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Count, Avg
 from django.template import Context, Template
 
+
 # Create your views here.
 
 class MovieListview(generic.ListView):
@@ -14,7 +15,6 @@ class MovieListview(generic.ListView):
 
     model = Movie
     template_name = 'movies/movie_list.html'
-
 
     # def get_context_data(self, **kwargs):
     #
@@ -30,6 +30,7 @@ class MovieListview(generic.ListView):
 
     paginate_by = 24
 
+
 class MovieDetailView(generic.DetailView):
     """Detail page for a movie"""
     model = Movie
@@ -42,6 +43,7 @@ class MovieDetailView(generic.DetailView):
         context = super(MovieDetailView, self).get_context_data(**kwargs)
         context['num_ratings'] = obj.rating_set.count()
         return context
+
 
 class RatingCreateView(generic.CreateView):
     """View for creating a rating"""
