@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
+from movies.views import LoginView
 
 urlpatterns = [
     url(r'^', include('movies.urls', namespace='movies')),
     url(r'^admin/', admin.site.urls),
-
+    url(r'^login/$', LoginView.as_view()),
+    url(r'^logout/$', auth_views.logout, name='logout'),
 ]
